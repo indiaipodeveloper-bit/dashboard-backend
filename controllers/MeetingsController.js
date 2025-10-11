@@ -7,7 +7,7 @@ export async function AddNewMeeting(req, res) {
       $and: [{ date }, { time }],
     });
     if (existingMeeting) {
-      return res.statu(400).send("Meeting Already Exist");
+      return res.status(400).send("Meeting Already Exist");
     }
     const meeting = await Meetings.create({
       name,

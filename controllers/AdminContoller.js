@@ -25,7 +25,7 @@ export async function GetAdminInfo(req, res) {
 export async function getAllAdmins(req, res) {
   try {
     const allAdmins = await Admins.find({email:{$ne:req.admin.email}});
-    return res.statu(200).json({ admins: allAdmins });
+    return res.status(200).json({ admins: allAdmins });
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
   }
@@ -40,7 +40,7 @@ export async function getAllAdmins(req, res) {
 export  async function getAllUsers(req, res) {
   try {
     const allBlogs = await User.find({});
-    return res.statu(200).json({ allBlogs });
+    return res.status(200).json({ allBlogs });
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
   }
@@ -94,7 +94,7 @@ export async function AddNewAdmin(req, res) {
       password: hashedPassword,
     });
 
-    return res.statu(200).json({ msg: "Admins Added", newAddedAdmin: admin });
+    return res.status(200).json({ msg: "Admins Added", newAddedAdmin: admin });
   } catch (error) {
     return res.status(500).send("Internal Server Error");
   }
@@ -106,12 +106,12 @@ export async function AddUser(req, res) {
     const { name, email, password, phone, gender,isActive } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.statu(400).send("User Already Exist");
+      return res.status(400).send("User Already Exist");
     }
     const user = await User.create({
       name,email,password,phone,gender,isActive
     });
-    return res.statu(200).json({ user });
+    return res.status(200).json({ user });
   } catch (error) {
     return res.status(500).send("Internal Server Error");
   }

@@ -8,7 +8,7 @@ export async function AddBlog(req, res) {
     const { title, description, image, slug } = req.body;
     const existingBlog = await Blog.findOne({ slug });
     if (existingBlog) {
-      return res.statu(400).send("Blog Already Exist");
+      return res.status(400).send("Blog Already Exist");
     }
     const blog = await Blog.create({
       title,
