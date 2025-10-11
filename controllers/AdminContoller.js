@@ -24,7 +24,7 @@ export async function GetAdminInfo(req, res) {
 // list of admins so the every admin can see the no of admins
 export async function getAllAdmins(req, res) {
   try {
-    const allAdmins = await Admins.find({ email: { $ne: req.admin.email } });
+    const allAdmins = await Admins.find({});
     return res.status(200).json({ admins: allAdmins });
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
