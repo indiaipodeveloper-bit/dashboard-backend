@@ -106,7 +106,7 @@ export async function AddUser(req, res) {
     const user = await User.create({
       name,
       email,
-      password,
+      password:hashedPassword,
       phone,
       gender,
       isActive,
