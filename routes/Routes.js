@@ -3,7 +3,7 @@ import { AddNewMeeting, getAllMeetings } from "../controllers/MeetingsController
 import { EditFinancialDetails, getAllFinancialDetails } from "../controllers/FinancialController.js";
 import { EditBusinessDetails, getAllBusinessDetails } from "../controllers/BusinessController.js";
 import { AddBlog, getAllBlogs } from "../controllers/BlogsController.js";
-import {AddNewAdmin, AdminLogin, GetAdminInfo, getAllAdmins, getAllUsers} from '../controllers/AdminContoller.js'
+import {AddNewAdmin, AddUser, AdminLogin, GetAdminInfo, getAllAdmins, getAllUsers} from '../controllers/AdminContoller.js'
 import { checkAdmin, checkSuperAdmin } from "../middleware/AdminMiddleware.js";
 import { AddNews, getAllNews } from "../controllers/NewsController.js";
 
@@ -19,7 +19,7 @@ router.post("/add-admin", AddNewAdmin);
 
 
 router.get("/all-users" , getAllUsers);
-router.post("/add-user" , getAllUsers);
+router.post("/add-user" , AddUser);
 
 
 
