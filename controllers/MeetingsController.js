@@ -14,7 +14,6 @@ export async function AddNewMeeting(req, res) {
       date,
       time,
       fees,
-      createdBy:req.user.id
     });
     return res.status(200).json({ meeting });
   } catch (error) {
