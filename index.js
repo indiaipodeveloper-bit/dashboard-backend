@@ -33,7 +33,7 @@ app.get("/",(req,res)=>{
 })
 
 
-connect("mongodb://127.0.0.1:27017/dashboard")
+connect(process.env.MONGOURI)
   .then(() => {
     console.log("db connected");
     app.listen(PORT, () => {
