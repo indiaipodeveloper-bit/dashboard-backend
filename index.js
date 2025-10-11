@@ -32,8 +32,9 @@ app.get("/",(req,res)=>{
   return res.send("dashboard backend")
 })
 
-
+console.log(process.env.MONGOURI)
 connect(process.env.MONGOURI)
+
   .then(() => {
     console.log("db connected");
     app.listen(PORT, () => {
