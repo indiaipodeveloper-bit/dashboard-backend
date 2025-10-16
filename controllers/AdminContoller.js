@@ -200,6 +200,6 @@ export async function RemoveProfileImage(req, res) {
     await user.save();
     return res.status(200).json({ user });
   } catch (error) {
-    return res.status(500).send("Sorry Internal Server Error inside the remove image controler !");
+    return res.status(500).send(req.user);
   }
 }
