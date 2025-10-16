@@ -187,19 +187,22 @@ export async function UpdateAdminProfile(req, res) {
 
 export async function RemoveProfileImage(req, res) {
   try {
-    const user = await Admins.findOne({ email:req.user.email });
+    const user = await Admins.findOne({ email: req.user.email });
     if (!user) {
-      return res.status(400).send("User Not Found",user);
+      return res.status(400).send("User Not Found");
     }
 
-    if (user.image) {
-      unlinkSync(user.image);
+    if (user.image && fs.existsSync(user.image)) {
+      try {
+        fs.unlinkSync(user.image);
+      } catch (fileError) {
+        return res.status(400).send("error while removing the image")
+      }
     }
-
     user.image = null;
     await user.save();
     return res.status(200).json({ user });
   } catch (error) {
-    return res.status(500).send("Sorry Internal Server inside remove image controller");
+    return res.status(500).send("Sorry Internal Server error inside remove image controller");
   }
 }
