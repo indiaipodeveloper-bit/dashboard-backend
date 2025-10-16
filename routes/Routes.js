@@ -36,6 +36,7 @@ router.get("/get-adminInfo", GetAdminInfo);
 router.post("/login", AdminLogin);
 router.post(
   "/add-profile-image",
+  checkAdmin,
   upload.single("profile-image"),
   AddProfileImage
 );
