@@ -188,8 +188,8 @@ export async function UpdateAdminProfile(req, res) {
 export async function RemoveProfileImage(req, res) {
   try {
     const user = await Admins.findOne({ _id: req.user.id });
-    if (!user) {
-      return res.status(400).send("User Not Found");
+    if (user) {
+      return res.status(400).send("User Not Found",user);
     }
 
     if (user.image) {
@@ -200,6 +200,6 @@ export async function RemoveProfileImage(req, res) {
     await user.save();
     return res.status(200).json({ user });
   } catch (error) {
-    return res.status(500).send(req.user);
+    return res.status(500).send("Sorry Internal Server inside remove image controller");
   }
 }
