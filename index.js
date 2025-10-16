@@ -49,12 +49,12 @@
 
 import express from "express";
 import dotenv from "dotenv";
-import { connect } from "../config/dbconnection.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { AdminRouter } from "../routes/Routes.js";
 import { UserRouter } from "../routes/UserRoutes.js";
 import serverless from "serverless-http";
+import { connect } from "./config/dbconnection.js";
 
 dotenv.config();
 
