@@ -17,7 +17,7 @@ const BlogSchema = new mongoose.Schema({
     image:{
         type:String,
     }
-})
+},{timestamps:true})
 
 
 export const Blog = mongoose.model("blogs",BlogSchema)

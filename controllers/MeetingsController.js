@@ -25,7 +25,6 @@ export async function AddNewMeeting(req, res) {
 export async function getAllMeetings(req, res) {
   try {
     const allMeetings = await Meetings.find({}).populate("createdBy");
-    console.log(allMeetings);
     return res.status(200).json({ allMeetings });
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");

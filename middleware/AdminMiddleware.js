@@ -12,9 +12,9 @@ export function checkSuperAdmin(req, res, next) {
       return res.status(400).send("Not Authenticated");
     }
 
-    if(user.adminRole == "SuperAdmin"){
-        req.user = user
-       next();
+    if (user.adminRole == "SuperAdmin") {
+      req.user = user;
+      next();
     }
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
@@ -31,13 +31,11 @@ export function checkAdmin(req, res, next) {
       return res.status(400).send("Not Authenticated");
     }
 
-    if(user.adminRole == "Admin" || user.adminRole == "SuperAdmin"){
-        req.user = user
-       next();
+    if (user.adminRole == "Admin" || user.adminRole == "SuperAdmin") {
+      req.user = user;
+      next();
     }
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
   }
 }
-
-

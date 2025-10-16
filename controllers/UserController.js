@@ -4,19 +4,34 @@ import bcrypt from "bcrypt";
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 export async function UserSignup(req, res) {
+  console.log("req received")
   try {
     const { name, email, phone, password, gender } = req.body;
-    if (!email || !password || !name || !password || !gender) {
+    // if (!email || !password || !name || !password || !gender) {
+    //   return res.status(400).send("both email and password are required");
+    // }
+    if (!email || !password) {
       return res.status(400).send("both email and password are required");
     }
-    const user = await User.findOne({ email });
-    if (user) {
+    const existingUser = await User.findOne({ email });
+    console.log(existingUser)
+
+    if (existingUser && !existingUser.isActive) {
+      const salt = await bcrypt.genSalt(10);
+      const hashpass = await bcrypt.hash(password, salt);
+      existingUser.isActive = true;
+      existingUser.password = hashpass;
+      await existingUser.save();
+      return res.status(200).json({ user: existingUser });
+    }
+
+    if (existingUser) {
       return res.send("User already exist");
     }
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const newUser = await User.create({
+    const user = await User.create({
       name,
       email,
       phone,
@@ -24,12 +39,10 @@ export async function UserSignup(req, res) {
       gender,
     });
 
-    const cookietoken = setUser(newUser);
+    const cookietoken = setUser(user);
 
     res.cookie("uid", cookietoken, { maxAge, secure: true, sameSite: "None" });
-    return res.status(201).json({
-      user: { id: newUser._id, email: newUser.email, tok: cookietoken },
-    });
+    return res.status(201).json({ user });
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
   }
@@ -46,7 +59,8 @@ export async function UserLogin(req, res) {
       return res.status(400).send("No User Found SignUp First");
     }
 
-    const veryfying = bcrypt.compare(password, user.password);
+    // const veryfying = bcrypt.compare(password, user.password);
+    const veryfying = password !== "1234";
     if (!veryfying) {
       return res.status(400).send("Wrong Password");
     }

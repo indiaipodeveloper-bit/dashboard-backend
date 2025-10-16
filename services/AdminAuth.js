@@ -7,7 +7,7 @@ export function setAdminAuthCookie(user) {
     {
       email: user.email,
       id: user._id,
-      adminRole: user.isAdmin
+      adminRole: user.adminRole
     },
     secretkey,
     {
@@ -17,5 +17,5 @@ export function setAdminAuthCookie(user) {
 }
 
 export function getAdminUserCookie(token) {
-  return jwt.verify(token, secret);
+  return jwt.verify(token, secretkey);
 }
