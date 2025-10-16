@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 export async function UserSignup(req, res) {
-  console.log("req received")
   try {
     const { name, email, phone, password, gender } = req.body;
     // if (!email || !password || !name || !password || !gender) {
@@ -14,7 +13,6 @@ export async function UserSignup(req, res) {
       return res.status(400).send("both email and password are required");
     }
     const existingUser = await User.findOne({ email });
-    console.log(existingUser)
 
     if (existingUser && !existingUser.isActive) {
       const salt = await bcrypt.genSalt(10);

@@ -17,7 +17,7 @@ export function checkSuperAdmin(req, res, next) {
       next();
     }
   } catch (error) {
-    return res.status(500).send("Sorry Internal Server Error inside the checksuper admins middleware !");
+    return res.status(500).send("Sorry Internal Server Error !");
   }
 }
 export function checkAdmin(req, res, next) {
@@ -36,6 +36,6 @@ export function checkAdmin(req, res, next) {
       next();
     }
   } catch (error) {
-    return res.status(500).send("Sorry Internal Server Error inside the checkadmin middleware !");
+    return res.status(500).send("Sorry Internal Server Error !");
   }
 }

@@ -175,8 +175,6 @@ export async function UpdateAdminProfile(req, res) {
       { name: name },
       {new: true, runValidators: true }
     );
-    console.log(user);
-    console.log("done");
     return res.status(200).json({ user });
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
@@ -203,6 +201,6 @@ export async function RemoveProfileImage(req, res) {
     await user.save();
     return res.status(200).json({ user });
   } catch (error) {
-    return res.status(500).send("Sorry Internal Server error inside remove image controller");
+    return res.status(500).send("Sorry Internal Server ");
   }
 }
