@@ -187,7 +187,7 @@ export async function UpdateAdminProfile(req, res) {
 
 export async function RemoveProfileImage(req, res) {
   try {
-    const user = await Admins.findOne({ _id: req.user.id });
+    const user = await Admins.findOne({ email:req.user.email });
     if (user) {
       return res.status(400).send("User Not Found",user);
     }
