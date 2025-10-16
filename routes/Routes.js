@@ -32,7 +32,7 @@ const upload = multer({ dest: "uploads/profiles" });
 
 const router = express.Router();
 
-router.get("/get-adminInfo", GetAdminInfo);
+router.get("/get-adminInfo",checkAdmin, GetAdminInfo);
 router.post("/login", AdminLogin);
 router.post(
   "/add-profile-image",
@@ -40,9 +40,9 @@ router.post(
   upload.single("profile-image"),
   AddProfileImage
 );
-router.post('/update-profile',UpdateAdminProfile)
-router.get("/remove-profile-image", RemoveProfileImage);
-router.get("/logout", LogoutAdmin);
+router.post('/update-profile',checkAdmin,UpdateAdminProfile)
+router.get("/remove-profile-image",checkAdmin, RemoveProfileImage);
+router.get("/logout",checkAdmin, LogoutAdmin);
 
 router.get("/all-admins", getAllAdmins);
 router.post("/add-admin", checkSuperAdmin, AddNewAdmin);
@@ -50,7 +50,7 @@ router.post("/add-admin", checkSuperAdmin, AddNewAdmin);
 
 router.get("/all-users", getAllUsers);
 router.post("/add-user", AddUser);
-router.post("/change-user-status", changeUserActiveStatus);
+router.post("/change-user-status",checkAdmin, changeUserActiveStatus);
 
 router.get("/all-blogs", getAllBlogs);
 router.post("/add-blog", AddBlog);
