@@ -130,7 +130,14 @@ export async function DeleteAccount(req, res) {
       { email: req.user.email },
       { isActive: false }
     );
-    return res.status(200).send("Account Deleted");
+    return res
+      .status(200)
+      .res.cookie("uid", cookietoken, {
+        maxAge: 0,
+        secure: true,
+        sameSite: "None",
+      })
+      .send("Account Deleted");
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
   }

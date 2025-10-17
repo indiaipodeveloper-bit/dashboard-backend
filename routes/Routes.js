@@ -18,6 +18,7 @@ import {
   AddUser,
   AdminLogin,
   changeUserActiveStatus,
+  DeleteUser,
   GetAdminInfo,
   getAllAdmins,
   getAllUsers,
@@ -51,6 +52,7 @@ router.post("/add-admin", checkSuperAdmin, AddNewAdmin);
 router.get("/all-users", getAllUsers);
 router.post("/add-user", AddUser);
 router.post("/change-user-status",checkAdmin, changeUserActiveStatus);
+router.post("/delete-user",checkAdmin, DeleteUser);
 
 router.get("/all-blogs", getAllBlogs);
 router.post("/add-blog", AddBlog);
