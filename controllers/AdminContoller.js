@@ -179,12 +179,16 @@ export async function AddProfileImage(req, res) {
 
 export async function UpdateAdminProfile(req, res) {
   try {
-    const { name } = req.body;
-    if (!name) {
-      return res.status(400).send("Name is Required to Update the Profile");
-    }
+    const { name, password } = req.body;
+    const updateFields = {};
+    if (name) updateFields.name = name;
+    if (password) updateFields.password = password;
     const user = await Admins.findOne({ _id: req.user.id });
-    user.name = name;
+    if (!updateFields) {
+      return res.status(200).json({ user });
+    }
+    if (updateFields.name) user.name = name;
+    if (updateFields.password) user.password = password;
     await user.save();
     return res.status(200).json({ user });
   } catch (error) {
