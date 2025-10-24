@@ -1,13 +1,16 @@
 import { Blog } from "../models/BlogModel.js";
-import fs, { renameSync,unlinkSync,existsSync } from "fs";
+import fs, { renameSync, unlinkSync, existsSync } from "fs";
 
 // Add new blog
 export async function AddBlog(req, res) {
   try {
     const { title, slug, subDescription, description } = req.body;
-    const existingBlog = await Blog.findOne({slug})
-    if(existingBlog){
-      return res.status(400).send("Slug is Already Taken")
+    if (!title || !slug || !subDescription || !description) {
+      return res.status(400).send("All The Details Are Required");
+    }
+    const existingBlog = await Blog.findOne({ slug });
+    if (existingBlog) {
+      return res.status(400).send("Slug is Already Taken");
     }
     if (!req.file) {
       return res.status(400).send("Blog Image is Required");
@@ -55,8 +58,8 @@ export async function DeleteBlog(req, res) {
     if (!blog) {
       return res.status(400).send("Blog Doesn't Exist");
     }
-    if(existsSync(blog.image)){
-      unlinkSync(blog.image)
+    if (existsSync(blog.image)) {
+      unlinkSync(blog.image);
     }
     return res.status(200).send("Blog Deleted Successfully");
   } catch (error) {
