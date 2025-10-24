@@ -55,7 +55,7 @@ router.get("/remove-profile-image", checkAdmin, RemoveProfileImage);
 router.get("/logout", checkAdmin, LogoutAdmin);
 
 router.get("/all-admins", checkAdmin, getAllAdmins);
-router.post("/add-admin", AddNewAdmin);
+router.post("/add-admin", checkSuperAdmin, AddNewAdmin);
 router.post("/edit-admin", checkSuperAdmin, EditAdminProfile);
 router.post("/delete-admin", checkSuperAdmin, DeleteAdminByOnlySuperAdmin);
 
