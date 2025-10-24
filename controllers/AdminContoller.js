@@ -23,7 +23,7 @@ export async function GetAdminInfo(req, res) {
 export async function getAllAdmins(req, res) {
   try {
     // const allAdmins = await Admins.find({ _id: { $ne: req.user.id } });
-    const allAdmins = await Admins.find({ _id: { $ne: req.user.id } });
+    const allAdmins = await Admins.find({});
     return res.status(200).json({ admins: allAdmins });
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
