@@ -4,7 +4,7 @@ import { User } from "../models/UserModel.js";
 import { setAdminAuthCookie } from "../services/AdminAuth.js";
 import fs, { renameSync, unlinkSync } from "fs";
 import mongoose from "mongoose";
-const maxage = 3 * 24 * 60 * 60 * 1000;
+const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 // <----------------------------------------------- Get Requests ------------------------------------------------------>
 
@@ -23,7 +23,7 @@ export async function GetAdminInfo(req, res) {
 export async function getAllAdmins(req, res) {
   try {
     // const allAdmins = await Admins.find({ _id: { $ne: req.user.id } });
-    const allAdmins = await Admins.find({});
+    const allAdmins = await Admins.find({ _id: { $ne: req.user.id } });
     return res.status(200).json({ admins: allAdmins });
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
@@ -59,7 +59,7 @@ export async function AdminLogin(req, res) {
     }
     const cookietoken = setAdminAuthCookie(admin);
     res.cookie("admincookie", cookietoken, {
-      maxage,
+      maxAge,
       secure: true,
       sameSite: "None",
     });
@@ -82,8 +82,8 @@ export async function LogoutAdmin(req, res) {
 }
 
 export async function AddNewAdmin(req, res) {
-  const { name, email, adminRole, password } = req.body;
   try {
+    const { name, email, adminRole, password } = req.body;
     const existingAdmin = await Admins.findOne({ email });
     if (existingAdmin) {
       return res.status(400).send("Admin Already Exist");
@@ -106,9 +106,43 @@ export async function AddNewAdmin(req, res) {
   }
 }
 
+export async function EditAdminProfile(req, res) {
+  try {
+    const { name, password, adminRole, email } = req.body;
+    const updateFields = {};
+    if (name) updateFields.name = name;
+    if (password) updateFields.password = password;
+    if (adminRole) updateFields.adminRole = adminRole;
+    const user = await Admins.findOneAndUpdate(
+      { email },
+      { $set: updateFields },
+      { new: true, runValidators: true }
+    );
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(500).send("Sorry Internal Server Error !");
+  }
+}
+
+export async function DeleteAdminByOnlySuperAdmin(req, res) {
+  try {
+    const { adminDetails } = req.body;
+    const admin = await Admins.findOneAndDelete({ _id: adminDetails._id });
+    if (!admin) {
+      return res.status(400).send("No Admin Found");
+    }
+    return res.status(200).send("Admin Deleted Successfully");
+  } catch (error) {
+    return res.status(500).send("Internal Server Error");
+  }
+}
+
 export async function AddUser(req, res) {
   try {
-    const { name, email, password, phone, gender, isActive } = req.body;
+    const { name, email, password, phone, gender, isAdmin } = req.body;
+    if ((!name || !email || !phone || !password || !gender, !isAdmin)) {
+      return res.status(400).send("All The Details Are Required");
+    }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).send("User Already Exist");
@@ -121,11 +155,38 @@ export async function AddUser(req, res) {
       password: hashedPassword,
       phone,
       gender,
-      isActive,
+      isAdmin,
     });
     return res.status(200).json({ user });
   } catch (error) {
     return res.status(500).send("Internal Server Error");
+  }
+}
+
+export async function EditUser(req, res) {
+  try {
+    const { name,email, password, phone, gender, isAdmin } = req.body;
+    const updateFields = {};
+    if (name) updateFields.name = name;
+    if (phone) updateFields.phone = phone;
+    if (gender) updateFields.gender = gender;
+    if (password) updateFields.password = password;
+    if (isAdmin) updateFields.isAdmin = isAdmin;
+
+    if (!updateFields) {
+      return res.status(200).send("Profile Updated Successfully");
+    }
+    const user = await User.findOneAndUpdate(
+      { email: email },
+      { $set: updateFields },
+      { new: true, runValidators: true }
+    );
+    if (!user) {
+      return res.status(400).send("User Does Not Exist");
+    }
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(500).send("Sorry Internal Server Error !");
   }
 }
 

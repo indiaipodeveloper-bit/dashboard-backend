@@ -23,6 +23,7 @@ app.use(express.json());
 
 
 app.use("/uploads/profiles", express.static("uploads/profiles"));
+app.use("/uploads/blogs", express.static("uploads/blogs"));
 
 
 app.use("/admin",AdminRouter)
