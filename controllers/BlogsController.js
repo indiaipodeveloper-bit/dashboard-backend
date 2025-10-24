@@ -5,6 +5,10 @@ import fs, { renameSync,unlinkSync,existsSync } from "fs";
 export async function AddBlog(req, res) {
   try {
     const { title, slug, subDescription, description } = req.body;
+    const existingBlog = await Blog.findOne({slug})
+    if(existingBlog){
+      return res.status(400).send("Slug is Already Taken")
+    }
     if (!req.file) {
       return res.status(400).send("Blog Image is Required");
     }
