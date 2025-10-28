@@ -24,6 +24,7 @@ app.use(express.json());
 
 app.use("/uploads/profiles", express.static("uploads/profiles"));
 app.use("/uploads/blogs", express.static("uploads/blogs"));
+app.use("/uploads/news", express.static("uploads/news"));
 
 
 app.use("/admin",AdminRouter)
@@ -33,7 +34,6 @@ app.get("/",(req,res)=>{
   return res.send("dashboard backend")
 })
 
-console.log(process.env.MONGOURI)
 connect(process.env.MONGOURI)
 
   .then(() => {

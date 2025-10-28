@@ -59,6 +59,7 @@ export async function AdminLogin(req, res) {
     }
     const cookietoken = setAdminAuthCookie(admin);
     res.cookie("admincookie", cookietoken, {
+      httpOnly: true,
       maxAge,
       secure: true,
       sameSite: "None",
@@ -165,7 +166,7 @@ export async function AddUser(req, res) {
 
 export async function EditUser(req, res) {
   try {
-    const { name,email, password, phone, gender, isAdmin } = req.body;
+    const { name, email, password, phone, gender, isAdmin } = req.body;
     const updateFields = {};
     if (name) updateFields.name = name;
     if (phone) updateFields.phone = phone;

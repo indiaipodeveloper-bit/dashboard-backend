@@ -14,6 +14,7 @@ import {
 import {
   AddBlog,
   DeleteBlog,
+  EditBlog,
   getAllBlogs,
 } from "../controllers/BlogsController.js";
 import {
@@ -34,10 +35,16 @@ import {
   UpdateAdminProfile,
 } from "../controllers/AdminContoller.js";
 import { checkAdmin, checkSuperAdmin } from "../middleware/AdminMiddleware.js";
-import { AddNews, getAllNews } from "../controllers/NewsController.js";
+import {
+  AddNews,
+  DeleteNews,
+  EditNews,
+  getAllNews,
+} from "../controllers/NewsController.js";
 import multer from "multer";
 const uploadProfileImage = multer({ dest: "uploads/profiles" });
 const uploadBlogImage = multer({ dest: "uploads/blogs" });
+const uploadNewsImage = multer({ dest: "uploads/news" });
 
 const router = express.Router();
 
@@ -66,7 +73,18 @@ router.post("/change-user-status", checkAdmin, changeUserActiveStatus);
 router.post("/delete-user", checkAdmin, DeleteUser);
 
 router.get("/all-blogs", getAllBlogs);
-router.post("/add-blog",checkAdmin,uploadBlogImage.single("blog-image"), AddBlog);
+router.post(
+  "/add-blog",
+  checkAdmin,
+  uploadBlogImage.single("blog-image"),
+  AddBlog
+);
+router.post(
+  "/edit-blog",
+  checkAdmin,
+  uploadBlogImage.single("edit-blog-image"),
+  EditBlog
+);
 router.post("/delete-blog", checkAdmin, DeleteBlog);
 
 router.get("/all-business-details", getAllBusinessDetails);
@@ -78,7 +96,19 @@ router.patch("/edit-financials", EditFinancialDetails);
 router.get("/all-meetings", getAllMeetings);
 router.post("/add-meeting", AddNewMeeting);
 
-router.get("/all-news", getAllNews);
-router.post("/add-news", AddNews);
+router.get("/all-news", checkAdmin, getAllNews);
+router.post(
+  "/add-news",
+  uploadNewsImage.single("news-image"),
+  checkAdmin,
+  AddNews
+);
+router.post(
+  "/edit-news",
+  uploadNewsImage.single("news-image"),
+  checkAdmin,
+  EditNews  
+);
+router.post("/delete-news", checkAdmin, DeleteNews);
 
 export { router as AdminRouter };

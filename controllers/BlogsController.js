@@ -44,8 +44,24 @@ export async function getAllBlogs(req, res) {
 
 export async function EditBlog(req, res) {
   try {
-    const allBlogs = await Blog.find({});
-    return res.status(200).json({ allBlogs });
+    const { title, slug, description, subDescription, _id } = req.body;
+    const blog = await Blog.findOne({ _id });
+
+    blog.title = title
+    blog.slug = slug
+    blog.description = description
+    blog.subDescription = subDescription
+
+    if (req.file) {
+      const fileName = "uploads/blogs/" + Date.now() + req.file.originalname;
+      if (existsSync(blog.image)) {
+        unlinkSync(blog.image);
+      }
+      renameSync(req.file.path, fileName);
+      blog.image = fileName;
+    }
+    await blog.save();
+    return res.status(200).json({ blog });
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
   }
