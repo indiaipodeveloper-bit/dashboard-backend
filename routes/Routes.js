@@ -93,8 +93,8 @@ router.patch("/edit-business-details", EditBusinessDetails);
 router.get("/all-financial-details", getAllFinancialDetails);
 router.patch("/edit-financials", EditFinancialDetails);
 
-router.get("/all-meetings", getAllMeetings);
-router.post("/add-meeting", AddNewMeeting);
+router.get("/all-meetings",checkAdmin, getAllMeetings);
+router.post("/add-meeting",checkAdmin, AddNewMeeting);
 
 router.get("/all-news", checkAdmin, getAllNews);
 router.post(

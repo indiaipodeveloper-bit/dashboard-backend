@@ -23,8 +23,9 @@ export async function AddNewMeeting(req, res) {
 
 // all the scheduled Meetings
 export async function getAllMeetings(req, res) {
+  console.log("inside get all metings")
   try {
-    const allMeetings = await Meetings.find({}).populate("createdBy");
+    const allMeetings = await Meetings.find({}).populate("userId");
     return res.status(200).json({ allMeetings });
   } catch (error) {
     return res.status(500).send("Sorry Internal Server Error !");
