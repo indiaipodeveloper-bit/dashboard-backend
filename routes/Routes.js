@@ -94,7 +94,7 @@ router.get("/all-financial-details", getAllFinancialDetails);
 router.patch("/edit-financials", EditFinancialDetails);
 
 router.get("/all-meetings",checkAdmin, getAllMeetings);
-router.post("/add-meeting",checkAdmin, AddNewMeeting);
+router.post("/add-meeting", AddNewMeeting);
 
 router.get("/all-news", checkAdmin, getAllNews);
 router.post(
